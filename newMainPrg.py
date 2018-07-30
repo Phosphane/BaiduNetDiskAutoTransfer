@@ -13,6 +13,7 @@ import os
 import sys
 import sqlite3
 import json
+import getopt
 
 # Define Log Moudle
 import logging
@@ -37,7 +38,10 @@ logger.setLevel(logging.DEBUG)
 
 
 class dbOperation(object):
-	def __init__(self,dbFile = None):
+	#runMode:
+	#	0 : Normal Mode
+	#	-1 : Only The Error Link (isTransfered == -1)
+	def __init__(self,dbFile = None,runMode = 0):
 		if (not dbFile):
 			logger.critical("Database Not Found.Exiting...")
 			print("Database Not Found.Exiting...")
@@ -61,7 +65,10 @@ class dbOperation(object):
 		#		PanLink , string
 		#		PanPwd , string
 
-
+		if (runMode != 0):
+			self.__runMode = -1
+		else:
+			self.__runMode = 0
 		self.resList = []
 
 		self.__getDataFromDB()
@@ -70,7 +77,7 @@ class dbOperation(object):
 	def __getDataFromDB(self):
 		try:
 			for dbItem in self.dbCursor.execute("SELECT * FROM Resources"):#dbItem Type : tuple
-				if (dbItem[3] != 0):continue
+				if (dbItem[3] != self.__runMode):continue
 				resDict = {}
 				resDict["Name"] = dbItem[0]
 				resDict["PanLink"] = str(dbItem[1])
@@ -97,13 +104,13 @@ Config.json:
 
 
 class MainFramework(dbOperation):
-	def __init__(self,dbFile = None):
+	def __init__(self,dbFile = None,runMode = 0):
 
 		#Parent:
 		#	self.resList
 		#	self.__getDataFromDB()
 
-		dbOperation.__init__(self,dbFile)
+		dbOperation.__init__(self,dbFile,runMode)
 
 		self.__webDri = None
 		self.__linkCount = 0
@@ -157,6 +164,7 @@ class MainFramework(dbOperation):
 				logger.warn("Link %s Has Been Banned." % panLink)
 				print ("Link %s Has Been Banned." % panLink)
 				self.__updateLinkStatus(panLink,-2)
+				continue
 			self.__updateLinkStatus(panLink,1)
 
 	def __transfer(self,panLink,panPwd):
@@ -434,6 +442,7 @@ class MainFramework(dbOperation):
 	#	0 : Untransfer
 	#	1 : Transfered
 	#	-1 : Link Error
+	#	-2 : Link Banned
 	def __updateLinkStatus(self,PanLink,status):
 		try:
 			sql = "UPDATE Resources SET isTransfered=\'%d\' WHERE PanLink = \'%s\'"
@@ -451,12 +460,31 @@ class MainFramework(dbOperation):
 
 
 
-def main():
-	mf = MainFramework("moehui.db")
+def main(argv):
+	helpMsg = """Usage : 
+	python <file.py>
+Arguments:
+	-h,--help : Show This Message
+	-e,--errorCheck : Only Recheck The Error Link (Status Code == -1)
+"""
+	runMode = 0
+	try:
+		opts,args = getopt.getopt(argv,"he",["help","errorCheck"])
+	except getopt.GetoptError:
+		print (helpMsg)
+		sys.exit(2)
+	for opt,arg in opts:
+		if (opt == "-h" or opt == "--help"):
+			print (helpMsg)
+			sys.exit(0)
+		elif (opt == "-e" or opt == "--errorCheck"):
+			runMode = -1
+
+	mf = MainFramework("moehui.db",runMode)
 	mf.run()
 	#dbTest = dbOperation("moehui.db")
 	#dbTest.getDataFromDB()
 
 
 if (__name__ == "__main__"):
-	main()
+	main(sys.argv[1:])
