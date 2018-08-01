@@ -1,0 +1,24 @@
+{
+	"title":"Baidu Netdisk Auto Transfer",
+	"saveChangeButton" : "Save Changes",
+	"startTransferButton" : "Start Transfer",
+	"switchLangMsg":"Please Restart For Using New Language.",
+	"langLabel" : "Language : ",
+	"selectDBFileButton" : "Select DB",
+	"selectDBFileDialog" : "Select Database File",
+	"runModeCheckBox" : "Error Check ",
+	"defaultStatusTextBox" : "Waiting Operation\n",
+	"destPathLabel" : "Destnation Path : ",
+	"codeTextBoxXPathLabel" : "Code Textbox XPath : ",
+	"codeBtnXPathLabel" : "Code Button XPath : ",
+	"transferBtnSelectorLabel" : "Transfer Button CSS : ",
+	"checkBoxClassLabel" : "Check Box Class : ",
+	"fileTreeNodeClassLabel" : "Filetree Node Class : ",
+	"fileTreeDiaXPathLabel" : "File Dialog XPath : ",
+	"fileTreeCfmClassLabel" : "Filetree Comfirm Button Class :",
+	"notFoundLabel" : "Not Found ID : ",
+	"doneLink" : "Done : ",
+	"errorLink" : "Error : "
+
+
+}

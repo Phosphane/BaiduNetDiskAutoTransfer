@@ -69,6 +69,7 @@ class dbOperation(object):
 			self.__runMode = -1
 		else:
 			self.__runMode = 0
+		
 		self.resList = []
 
 		self.__getDataFromDB()
@@ -104,7 +105,7 @@ Config.json:
 
 
 class MainFramework(dbOperation):
-	def __init__(self,dbFile = None,runMode = 0):
+	def __init__(self,dbFile = None,runMode = 0,guiMode = 0):
 
 		#Parent:
 		#	self.resList
@@ -113,11 +114,14 @@ class MainFramework(dbOperation):
 		dbOperation.__init__(self,dbFile,runMode)
 
 		self.__webDri = None
-		self.__linkCount = 0
-		self.__linkCount = len(self.resList)
-		self.__errLinkCount = 0
-		self.__errLinkList = []
-		self.__doneLinkCount = 0
+		self.linkCount = 0
+		self.linkCount = len(self.resList)
+		self.errLinkCount = 0
+		self.errLinkList = []
+		self.bannedLinkCount = 0
+		self.bannedLinkList = []
+		self.doneLinkCount = 0
+
 		self.__codeTextBoxXPath = ""
 		self.__codeEnterBtnXPath = ""
 		self.__transferBtnClassName = ""
@@ -131,12 +135,17 @@ class MainFramework(dbOperation):
 
 		self.__loadConfig()
 
-		if (self.__linkCount == 0):
+		if (guiMode == 0):
+			self.__guiMode = 0
+		else:
+			self.__guiMode = 1
+
+		if (self.linkCount == 0):
 			print ("No Link Found , Exiting...")
 			logger.info("No Link Found , Exiting...")
 			sys.exit(0)
-		print ("Found %d Links." % self.__linkCount)
-		logger.info("Found %d Links." % self.__linkCount)
+		print ("Found %d Links." % self.linkCount)
+		logger.info("Found %d Links." % self.linkCount)
 		print ("Starting Chrome.")
 		logger.info("Starting Chrome.")
 		self.__webDri = webdriver.Chrome() #This Script Only Tested On Chrome
@@ -148,7 +157,7 @@ class MainFramework(dbOperation):
 	#		Name , unicode
 	#		PanLink , string
 	#		PanPwd , string
-	def run(self):
+	def run(self,guiCallback = None):
 		self.__login()
 		for linkItem in self.resList:
 			resName = linkItem["Name"]
@@ -159,13 +168,24 @@ class MainFramework(dbOperation):
 				self.__updateLinkStatus(panLink,-1)
 				print ("Error On Transfer Link : %s" % panLink)
 				logger.error("Error On Transfer Link : %s" % panLink)
+				self.errLinkList.append(panLink)
+				self.errLinkCount += 1
+				if (guiCallback != None):
+					guiCallback(panLink,-1)
 				continue
 			elif (retCode == -2):
 				logger.warn("Link %s Has Been Banned." % panLink)
 				print ("Link %s Has Been Banned." % panLink)
 				self.__updateLinkStatus(panLink,-2)
+				self.bannedLinkList.append(panLink)
+				self.bannedLinkCount += 1
+				if (guiCallback != None):
+					guiCallback(panLink,-2)
 				continue
 			self.__updateLinkStatus(panLink,1)
+			self.doneLinkCount += 1
+			if (guiCallback != None):
+					guiCallback(panLink,1)
 
 	def __transfer(self,panLink,panPwd):
 		print ("Starting Transfer With Link : %s , Pwd : %s" % (panLink,panPwd))
@@ -408,7 +428,7 @@ class MainFramework(dbOperation):
 	def __login(self):
 		self.__webDri.get("https://pan.baidu.com/")
 		print ("Please Confirm Login And Switch The Page To Recyle Bin.")
-		raw_input("[?] Hit The Fucking Enter When You Ready.")
+		input("[?] Hit The Fucking Enter When You Ready.")
 		logger.info("User Login.")
 		print ("User Login.")
 
@@ -455,9 +475,4 @@ class MainFramework(dbOperation):
 			logger.exception("Error On Update Link Status With Link : %s" % PanLink)
 			print ("Error On Update Link Status With Link : %s , Please Check The Log File" % PanLink)
 			return -1
-
-
-
-
-
 
