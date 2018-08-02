@@ -9,10 +9,12 @@ def main(argv):
 Arguments:
 	-h,--help : Show This Message
 	-e,--errorCheck : Only Recheck The Error Link (Status Code == -1)
+	-d,--databse : Use Custom Database
 """
 	runMode = 0
+	dbFile = "moehui.db"
 	try:
-		opts,args = getopt.getopt(argv,"he",["help","errorCheck"])
+		opts,args = getopt.getopt(argv,"hed:",["help","errorCheck","database="])
 	except getopt.GetoptError:
 		print (helpMsg)
 		sys.exit(2)
@@ -22,8 +24,10 @@ Arguments:
 			sys.exit(0)
 		elif (opt == "-e" or opt == "--errorCheck"):
 			runMode = -1
+		elif(opt == "-d" or opt == "--database"):
+			dbFile = arg
 
-	mf = MainFramework("moehui.db",runMode)
+	mf = MainFramework(dbFile,runMode)
 	mf.run()
 	#dbTest = dbOperation("moehui.db")
 	#dbTest.getDataFromDB()
