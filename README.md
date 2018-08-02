@@ -1,10 +1,16 @@
 # BaiduNetDiskAutoTransfer
 百度云网盘批量转存工具 </br>
-运行环境：Python2.7 </br>
+运行环境：Python3.7 </br>
   Python Selenium </br>
   Selenium Chrome Driver</br>
   
 # 更新日志
+2018-08-02 GUI Ver 0.0.1 Alpha</br>
+           Console Ver 1.1.0 Beta</br>
+1.新增图形界面</br>
+2.修改程序以适应图形界面需求</br>
+3.支持命令行界面使用参数指定数据库，详情见下方命令行参数界面
+
 2018-07-30 Ver1.0.1 Stable</br>
 1.修复部分Bug</br>
 2.增加命令行帮助信息
@@ -22,7 +28,8 @@
 
 # 命令行参数
 -h,--help : 显示帮助信息</br>
--e,--errorCheck : 重新检查错误链接（非被禁链接）
+-e,--errorCheck : 重新检查错误链接（非被禁链接）</br>
+-d,--databse : 数据库路径
 
 
 # 相关参数解释
@@ -46,5 +53,10 @@ fileTreeNodeClassName:</br>使用Class名定位保存路径的节点对象，一
 fileTreeDialogXPath:</br>使用XPath定位保存路径选择窗口</br>
 fileTreeConfirmBtnClassName:</br>使用Class名定位路径选择确认按钮</br>
 notFoundID:</br>使用ID定位链接失效的提示，用于判断链接是否失效</br>
+
+
+# 图形界面新增内容
+1.支持自选数据库，方便自选
+
 
 
