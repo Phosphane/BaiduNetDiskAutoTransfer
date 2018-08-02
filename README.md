@@ -3,6 +3,7 @@
 运行环境：Python3.7 </br>
   Python Selenium </br>
   Selenium Chrome Driver</br>
+  Python Qt 5
   
 # 更新日志
 2018-08-02 GUI Ver 0.0.1 Alpha</br>
