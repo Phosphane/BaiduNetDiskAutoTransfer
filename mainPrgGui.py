@@ -308,7 +308,9 @@ class AutoTransferGUI(QWidget):
 		elif(retStatus == -2):
 			self.__outputToTextBox("Link : " + panLink + " Has Been Banned.")
 
-		self.__statusLabel.setText(self.__lang.get("doneLink") + str(self.__transferFramework.doneLinkCount))
+			self.__lang.get("doneLink") + str(self.__transferFramework.doneLinkCount)
+
+		self.__statusLabel.setText("%s[%d/%d]" % (self.__lang.get("doneLink"),self.__transferFramework.doneLinkCount,self.__transferFramework.linkCount))
 
 		self.__errLabel.setText(self.__lang.get("errorLink") + str(self.__transferFramework.errLinkCount))
 

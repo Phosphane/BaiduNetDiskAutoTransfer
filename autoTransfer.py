@@ -163,7 +163,7 @@ class MainFramework(dbOperation):
 			resName = linkItem["Name"]
 			panLink = linkItem["PanLink"]
 			panPwd = linkItem["PanPwd"]
-			retCode = self.__transfer(panLink,panPwd)
+			retCode = self.__transfer(panLink,panPwd,guiCallback)
 			if (retCode == -1):
 				self.__updateLinkStatus(panLink,-1)
 				print ("Error On Transfer Link : %s" % panLink)
@@ -187,7 +187,7 @@ class MainFramework(dbOperation):
 			if (guiCallback != None):
 					guiCallback(panLink,1)
 
-	def __transfer(self,panLink,panPwd):
+	def __transfer(self,panLink,panPwd,guiCallback = None):
 		print ("Starting Transfer With Link : %s , Pwd : %s" % (panLink,panPwd))
 		logger.info("Starting Transfer With Link : %s , Pwd : %s" % (panLink,panPwd))
 		self.__webDri.get(panLink)
