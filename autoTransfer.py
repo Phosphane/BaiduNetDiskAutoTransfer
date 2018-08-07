@@ -75,9 +75,10 @@ class dbOperation(object):
 		self.__getDataFromDB()
 
 
-	def __getDataFromDB(self):
+	def __getDataFromDB(self,tableName = ""):
 		try:
-			for dbItem in self.dbCursor.execute("SELECT * FROM GameCG"):#dbItem Type : tuple
+			if (tableName == ""):return -1
+			for dbItem in self.dbCursor.execute("SELECT * FROM %s" % tableName):#dbItem Type : tuple
 				if (dbItem[3] != self.__runMode):continue
 				resDict = {}
 				resDict["Name"] = dbItem[0]
@@ -121,6 +122,8 @@ class MainFramework(dbOperation):
 		self.bannedLinkCount = 0
 		self.bannedLinkList = []
 		self.doneLinkCount = 0
+
+		self.__tableName = ""
 
 		self.__codeTextBoxXPath = ""
 		self.__codeEnterBtnXPath = ""
@@ -440,6 +443,7 @@ class MainFramework(dbOperation):
 			jsonData = json.load(configFile)
 			configFile.close()
 		try:
+			self.__tableName == jsonData["tableName"]
 			self.__codeTextBoxXPath = jsonData["codeTextBoxXPath"]
 			self.__codeEnterBtnXPath = jsonData["codeEnterBtnXPath"]
 			self.__transferBtnClassName = jsonData["transferBtnClassName"]
@@ -466,8 +470,8 @@ class MainFramework(dbOperation):
 	#	-2 : Link Banned
 	def __updateLinkStatus(self,PanLink,status):
 		try:
-			sql = "UPDATE GameCG SET isTransfered=\'%d\' WHERE PanLink = \'%s\'"
-			data = (status,PanLink)
+			sql = "UPDATE %s SET isTransfered=\'%d\' WHERE PanLink = \'%s\'"
+			data = (self.tableName,status,PanLink)
 			cmd = (sql % data)
 			logger.debug(cmd)
 			self.dbCursor.execute(cmd)

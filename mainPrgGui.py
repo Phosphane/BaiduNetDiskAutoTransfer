@@ -68,6 +68,7 @@ class AutoTransferGUI(QWidget):
 		self.__consoleConfig = MainConfigUpdater("config.json")
 
 
+		self.__tableName = ""
 		self.__codeTextBoxXPath = ""
 		self.__codeEnterBtnXPath = ""
 		self.__transferBtnClassName = ""
@@ -147,13 +148,15 @@ class AutoTransferGUI(QWidget):
 		self.__gridLayout.addWidget(self.__runModeCheckBox,9,0,1,2)
 		self.__gridLayout.addWidget(self.__langLabel,9,2,1,1)
 		self.__gridLayout.addWidget(self.__langSelectBox,9,3,1,1)
-		self.__gridLayout.addWidget(self.__saveButton,10,0,2,2)
-		self.__gridLayout.addWidget(self.__startButton,10,2,2,2)
-		self.__gridLayout.addWidget(self.__selectDBFileButton,12,0,1,1)
-		self.__gridLayout.addWidget(self.__dbLocationTextBox,12,1,1,3)
-		self.__gridLayout.addWidget(self.__statusLabel,13,0,1,2)
-		self.__gridLayout.addWidget(self.__errLabel,13,2,1,2)
-		self.__gridLayout.addWidget(self.__statusTextBox,14,0,3,4)
+		self.__gridLayout.addWidget(self.__tableNameLabel,10,0,1,2)
+		self.__gridLayout.addWidget(self.__tableNameTextBox,10,2,1,2)
+		self.__gridLayout.addWidget(self.__saveButton,11,0,2,2)
+		self.__gridLayout.addWidget(self.__startButton,11,2,2,2)
+		self.__gridLayout.addWidget(self.__selectDBFileButton,13,0,1,1)
+		self.__gridLayout.addWidget(self.__dbLocationTextBox,13,1,1,3)
+		self.__gridLayout.addWidget(self.__statusLabel,14,0,1,2)
+		self.__gridLayout.addWidget(self.__errLabel,14,2,1,2)
+		self.__gridLayout.addWidget(self.__statusTextBox,15,0,3,4)
 
 		for widget in self.__widgetList:
 			widget.setMaximumHeight(30)
@@ -170,6 +173,9 @@ class AutoTransferGUI(QWidget):
 
 
 	def __createTextBox(self):
+		self.__tableNameTextBox = QTextEdit()
+		self.__tableNameTextBox.setText(self.__tableName)
+		self.__widgetList.append(self.__tableNameTextBox)
 		self.__destTextBox = QTextEdit()
 		self.__destTextBox.setText(self.__destnationPath)
 		self.__widgetList.append(self.__destTextBox)
@@ -234,6 +240,9 @@ class AutoTransferGUI(QWidget):
 		self.__dbLocationTextBox.setText(self.__transferDBFile)
 
 	def __createLabel(self):
+		self.__tableNameLabel = QLabel()
+		self.__tableNameLabel.setText(self.__lang.get("tableNameLabel"))
+		self.__widgetList.append(self.__tableNameLabel)
 		self.__destLabel = QLabel()
 		self.__destLabel.setText(self.__lang.get("destPathLabel"))
 		self.__widgetList.append(self.__destLabel)
@@ -329,7 +338,7 @@ class AutoTransferGUI(QWidget):
 			configFile.close()
 
 
-
+		self.__consoleConfig.update("dbTableName",self.__tableNameTextBox.toPlainText())
 		self.__consoleConfig.update("destnationPath",self.__destTextBox.toPlainText())
 		self.__consoleConfig.update("codeTextBoxXPath",self.__codeTBTextBox.toPlainText())
 		self.__consoleConfig.update("codeEnterBtnXPath",self.__codeBtnXPathTextBox.toPlainText())
@@ -355,6 +364,7 @@ class AutoTransferGUI(QWidget):
 
 		self.__curLang = self.__config["lang"]
 
+		self.__tableName = self.__consoleConfig.get("dbTableName")
 		self.__destnationPath = self.__consoleConfig.get("destnationPath")
 		self.__codeTextBoxXPath = self.__consoleConfig.get("codeTextBoxXPath")
 		self.__codeEnterBtnXPath = self.__consoleConfig.get("codeEnterBtnXPath")

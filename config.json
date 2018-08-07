@@ -1,4 +1,5 @@
 {
+    "dbTableName":"GameCG",
     "checkBoxClassName":"Test",
     "codeEnterBtnXPath":"//*[@id=\"fufc62wg\"]/a",
     "codeTextBoxXPath":"//*[@id=\"xfspgN3b\"]",

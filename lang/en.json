@@ -18,7 +18,8 @@
 	"fileTreeCfmClassLabel" : "Filetree Comfirm Button Class :",
 	"notFoundLabel" : "Not Found ID : ",
 	"doneLink" : "Done : ",
-	"errorLink" : "Error : "
+	"errorLink" : "Error : ",
+	"tableNameLabel":"Table Name : "
 
 
 }
