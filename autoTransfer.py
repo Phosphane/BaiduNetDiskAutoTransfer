@@ -77,7 +77,7 @@ class dbOperation(object):
 
 	def __getDataFromDB(self):
 		try:
-			for dbItem in self.dbCursor.execute("SELECT * FROM Resources"):#dbItem Type : tuple
+			for dbItem in self.dbCursor.execute("SELECT * FROM GameCG"):#dbItem Type : tuple
 				if (dbItem[3] != self.__runMode):continue
 				resDict = {}
 				resDict["Name"] = dbItem[0]
@@ -186,6 +186,7 @@ class MainFramework(dbOperation):
 			self.doneLinkCount += 1
 			if (guiCallback != None):
 					guiCallback(panLink,1)
+		self.__webDri.quit()
 
 	def __transfer(self,panLink,panPwd):
 		print ("Starting Transfer With Link : %s , Pwd : %s" % (panLink,panPwd))
@@ -465,7 +466,7 @@ class MainFramework(dbOperation):
 	#	-2 : Link Banned
 	def __updateLinkStatus(self,PanLink,status):
 		try:
-			sql = "UPDATE Resources SET isTransfered=\'%d\' WHERE PanLink = \'%s\'"
+			sql = "UPDATE GameCG SET isTransfered=\'%d\' WHERE PanLink = \'%s\'"
 			data = (status,PanLink)
 			cmd = (sql % data)
 			logger.debug(cmd)

@@ -7,7 +7,7 @@ import os
 import json
 import time
 import threading
-from autoTransfer import MainFramework
+
 from lang import Lang
 
 #from PyQt5 import QtCore
@@ -282,11 +282,12 @@ class AutoTransferGUI(QWidget):
 
 
 	def __startTransfer(self):
+
 		if (self.__isTransferStarted):
 			pass
 			#Error On Transfer Is Started
 			return
-
+		from autoTransfer import MainFramework
 		if (self.__runModeCheckBox.isChecked()):
 			self.__runMode = -1
 		else:
@@ -295,6 +296,8 @@ class AutoTransferGUI(QWidget):
 		self.__transferFramework = MainFramework(self.__transferDBFile,self.__runMode)
 		self.__transferFramework.run(self.__guiCallback)
 		self.__isTransferStarted = False
+		del self.__transferFramework
+		del MainFramework
 
 	#	self.__transferThread = threading.Thread(target = self.__transferThreadFunc,args=())
 	#	self.__transferThread.daemon = True
