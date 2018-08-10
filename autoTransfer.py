@@ -72,13 +72,15 @@ class dbOperation(object):
 		
 		self.resList = []
 
-		self.__getDataFromDB()
+		#self.__getDataFromDB()
 
 
-	def __getDataFromDB(self,tableName = ""):
+	def getDataFromDB(self,tableName = ""):
 		try:
+#			print ("TableName : %s" % tableName)
 			if (tableName == ""):return -1
-			for dbItem in self.dbCursor.execute("SELECT * FROM %s" % tableName):#dbItem Type : tuple
+			for dbItem in list(self.dbCursor.execute("SELECT * FROM %s" % tableName)):#dbItem Type : tuple
+			#	print (dbItem)
 				if (dbItem[3] != self.__runMode):continue
 				resDict = {}
 				resDict["Name"] = dbItem[0]
@@ -116,14 +118,13 @@ class MainFramework(dbOperation):
 
 		self.__webDri = None
 		self.linkCount = 0
-		self.linkCount = len(self.resList)
 		self.errLinkCount = 0
 		self.errLinkList = []
 		self.bannedLinkCount = 0
 		self.bannedLinkList = []
 		self.doneLinkCount = 0
 
-		self.__tableName = ""
+		self.tableName = ""
 
 		self.__codeTextBoxXPath = ""
 		self.__codeEnterBtnXPath = ""
@@ -137,6 +138,8 @@ class MainFramework(dbOperation):
 		self.__notFoundID = ""
 
 		self.__loadConfig()
+		self.getDataFromDB(self.tableName)
+		self.linkCount = len(self.resList)
 
 		if (guiMode == 0):
 			self.__guiMode = 0
@@ -443,7 +446,7 @@ class MainFramework(dbOperation):
 			jsonData = json.load(configFile)
 			configFile.close()
 		try:
-			self.__tableName == jsonData["tableName"]
+			self.tableName = jsonData["dbTableName"]
 			self.__codeTextBoxXPath = jsonData["codeTextBoxXPath"]
 			self.__codeEnterBtnXPath = jsonData["codeEnterBtnXPath"]
 			self.__transferBtnClassName = jsonData["transferBtnClassName"]

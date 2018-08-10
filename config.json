@@ -1,8 +1,8 @@
 {
-    "dbTableName":"GameCG",
     "checkBoxClassName":"Test",
     "codeEnterBtnXPath":"//*[@id=\"fufc62wg\"]/a",
     "codeTextBoxXPath":"//*[@id=\"xfspgN3b\"]",
+    "dbTableName":"ImageRepo",
     "destnationPath":"/Test/Test",
     "fileTreeConfirmBtnClassName":"g-button-blue-large",
     "fileTreeDialogXPath":"//*[@id='fileTreeDialog']",
